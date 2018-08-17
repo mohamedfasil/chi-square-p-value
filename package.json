@@ -1,0 +1,41 @@
+{
+  "name": "chi-square-p-value",
+  "version": "0.0.1",
+  "description": "Find Chi Square, P-value, Degree of Freedom of a contingency Table ie, two dimensional array",
+  "main": "chi-square-p-value.js",
+  "scripts": {
+    "test": "NA",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohamedfasil/chi-square-p-value.git"
+  },
+  "keywords": [
+    "chi",
+    "square",
+    "p-value",
+    "p",
+    "value",
+    "degree",
+    "of",
+    "freedom",
+    "statistics",
+    "contingency",
+    "table"
+  ],
+  "author": "Mohamed Fasil",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/mohamedfasil/chi-square-p-value/issues"
+  },
+  "homepage": "https://github.com/mohamedfasil/chi-square-p-value#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  }
+}
