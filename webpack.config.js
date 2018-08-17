@@ -7,7 +7,7 @@ const path = require('path');
    output: {
      path: path.resolve(__dirname),
       filename: 'chi-square-p-value.js',
-      library: 'chi-square-p-value',
+      library: 'analyse',
       libraryTarget: 'umd',
       umdNamedDefine: true
     },

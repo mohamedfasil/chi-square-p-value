@@ -225,10 +225,10 @@ function _createMatrixfromDimensions(m,n)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 this.identity = function (m,n)
 { var res = _createMatrixfromDimensions(m,n);
-   for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = 0;
-    for (var i = 0; i < Math.min(m,n); i++) mat[i][i] = 1;
+  for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = 0;
+    for (var i = 0; i < Math.min(m,n); i++) res.mat[i][i] = 1;
   return res;
 }
 
@@ -239,7 +239,7 @@ this.unit = function (m,n)
 { var res = _createMatrixfromDimensions(m,n);
     for (var i = 0; i < m; i++)
       for (var j = 0; j < n; j++)
-        mat[i][j] = 1;
+        res.mat[i][j] = 1;
   return res;
 }
 
@@ -251,7 +251,7 @@ this.random = function (m,n)
 { var res = _createMatrixfromDimensions(m,n);
     for (var i = 0; i < m; i++)
       for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(Math.random());
+        res.mat[i][j] = _chkNum(Math.random());
   return res;
 }
 
@@ -265,7 +265,7 @@ this.copy = function (mo,fromRow,fromCol,m,n)
   var res = _createMatrixfromDimensions(m,n);
     for (var i = 0; i < m; i++)
       for (var j = 0; j < n; j++)
-        mat[i][j] = mo.mat[i + fromRow][j + fromCol];
+        res.mat[i][j] = mo.mat[i + fromRow][j + fromCol];
   return res;      
 }
 
@@ -276,9 +276,9 @@ this.copy = function (mo,fromRow,fromCol,m,n)
 this.transpose = function (mo)
 { _chkMatrix('transpose',1,mo);
   var res = _createMatrixfromDimensions(mo.n,mo.m);
-  for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = mo.mat[j][i];
+   for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = mo.mat[j][i];
   return res;
 }
 
@@ -290,8 +290,8 @@ this.transpose = function (mo)
 this.diagOf = function (mo)
 { _chkMatrix('diagOf',1,mo);
   var res = _createMatrixfromDimensions(Math.min(mo.m,mo.n),1);
-  for (var i = 0; i < m; i++)
-      mat[i][0] = mo.mat[i][i];
+  for (var i = 0; i < res.m; i++)
+      res.mat[i][0] = mo.mat[i][i];
   return res;
 }
 
@@ -306,8 +306,8 @@ this.diag = function (mo)
   { throw '***ERROR: in Matrix.diag: argument 1 is not a column vector.';
   }
   var res = Matrix.identity(mo.m,mo.m);
-  for (var i = 0; i < m; i++)
-      mat[i][i] = mo.mat[i][0];
+  for (var i = 0; i < res.m; i++)
+      res.mat[i][i] = mo.mat[i][0];
   return res;
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,10 +315,10 @@ this.diag = function (mo)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 this.max = function (mo)
 { _chkMatrix('max',1,mo);
-  var res = mat[0][0];
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        if (mat[i][j] > res) res = mat[i][j];
+  var res = mo.mat[0][0];
+    for (var i = 0; i < mo.m; i++)
+      for (var j = 0; j < mo.n; j++)
+        if (mo.mat[i][j] > res) res = mo.mat[i][j];
   return _chkNum(res);
 }
 
@@ -327,10 +327,10 @@ this.max = function (mo)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 this.min = function (mo)
 { _chkMatrix('min',1,mo);
-  var res = mat[0][0];
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        if (mat[i][j] < res) res = mat[i][j];
+  var res = mo.mat[0][0];
+    for (var i = 0; i < mo.m; i++)
+      for (var j = 0; j < mo.n; j++)
+        if (mo.mat[i][j] < res) res = mo.mat[i][j];
   return _chkNum(res);
 }
 
@@ -341,9 +341,9 @@ this.min = function (mo)
 this.scale = function (mo,scalar)
 { _chkMatrix('scale',1,mo);
   var res = _createMatrixfromArray(mo.mat);
-  for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(scalar * mat[i][j]);
+  for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = _chkNum(scalar * res.mat[i][j]);
   return res;
 }
 
@@ -357,9 +357,9 @@ this.add = function (mo1,mo2)
   { throw '***ERROR: in Matrix.add: matrix dimensions don\'t match.';
   }
   var res = _createMatrixfromDimensions(mo1.m,mo1.n);
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(mo1.mat[i][j] + mo2.mat[i][j]);
+    for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = _chkNum(mo1.mat[i][j] + mo2.mat[i][j]);
   return res;
 }
 
@@ -373,9 +373,9 @@ this.sub = function (mo1,mo2)
   { throw '***ERROR: in Matrix.sub: matrix dimensions don\'t match.';
   }
   var res = _createMatrixfromDimensions(mo1.m,mo1.n);
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(mo1.mat[i][j] - mo2.mat[i][j]);
+    for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = _chkNum(mo1.mat[i][j] - mo2.mat[i][j]);
   return res;
 }
 
@@ -391,12 +391,12 @@ this.mult = function (mo1,mo2)
   }
   var res = _createMatrixfromDimensions(mo1.m,mo2.n);
   var temp;
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
+    for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
       { temp = 0;
         for (var k = 0; k < mo1.n; k++)
           temp += mo1.mat[i][k] * mo2.mat[k][j];
-        mat[i][j] = _chkNum(temp);
+        res.mat[i][j] = _chkNum(temp);
       }
   return res;
 }
@@ -408,9 +408,9 @@ this.mult = function (mo1,mo2)
 this.map = function (f,mo)
 { _chkMatrix('map',2,mo);
   var res = _createMatrixfromDimensions(mo.m,mo.n);
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(f(mo.mat[i][j]));
+    for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = _chkNum(f(mo.mat[i][j]));
   return res;
 }
 
@@ -427,9 +427,9 @@ this.combine = function (f,mo1,mo2)
   { throw '***ERROR: in Matrix.combine: matrix dimensions don\'t match.';
   }
   var res = _createMatrixfromDimensions(mo1.m,mo1.n);
-    for (var i = 0; i < m; i++)
-      for (var j = 0; j < n; j++)
-        mat[i][j] = _chkNum(f(mo1.mat[i][j],mo2.mat[i][j]));
+    for (var i = 0; i < res.m; i++)
+      for (var j = 0; j < res.n; j++)
+        res.mat[i][j] = _chkNum(f(mo1.mat[i][j],mo2.mat[i][j]));
   return res;
 }
 
@@ -439,8 +439,8 @@ this.combine = function (f,mo1,mo2)
 this.trace = function (mo)
 { _chkMatrix('trace',1,mo);
   var t = 0;
-    for (var i = 0; i < Math.min(m,n); i++)
-      t += mat[i][i];
+    for (var i = 0; i < Math.min(mo.m,mo.n); i++)
+      t += mo.mat[i][i];
   return _chkNum(t);
 }
 
@@ -452,7 +452,7 @@ this.det = function (mo)
   if (mo.m != mo.n)
   { throw '***ERROR: in Matrix.det: argument is not square.';
   }
-    return _chkNum(det(create(mo)));
+    return _chkNum(LUDecomposition.det(create(mo)));
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -472,13 +472,15 @@ this.inverse = function (mo)
 this.solve = function (A,B)
 { _chkMatrix('solve',1,A);
   _chkMatrix('solve',2,B);
-  if (A.m == A.n)
-    return solve(create(A),B);
-  else if (A.m > A.n) {
+  if (A.m == A.n){
+    return LUDecomposition.solve(create(A),B);
+  } else if (A.m > A.n){
     var temp = create(A);
-    return solve(temp,B);
-  } else
+    return QRDecomposition.solve(temp,B);
+  }
+  else{
     throw '***ERROR: in Matrix.solve: argument 1 has fewer rows than columns.';
+  }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -510,4 +512,4 @@ this.display = function (mo,dp)
 
 } // end of createMatrixPackage
 
-window.Matrix = Matrix;
+export default Matrix;

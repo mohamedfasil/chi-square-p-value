@@ -31,7 +31,7 @@ const Gcf = (X,A) => {        // Good for X>A+1
       A1 = A1 / B1;
       B1 = 1;
   }
-  const Prob = Math.exp(A * Math.log(X) - X- this.LogGamma(A)) * A1;
+  const Prob = Math.exp(A * Math.log(X) - X- LogGamma(A)) * A1;
   return 1 - Prob;
 }
 
@@ -44,7 +44,7 @@ const Gser = (X,A) => {        // Good for X<A+1.
       G = G + T9;
       I = I + 1;
   }
-  G = G * Math.exp(A * Math.log(X) - X - this.LogGamma(A));
+  G = G * Math.exp(A * Math.log(X) - X - LogGamma(A));
   return G;
 }
 
@@ -53,9 +53,9 @@ const Gammacdf = (x,a) => {
   if (x <= 0) {
       GI = 0;
   } else if (x < a + 1) {
-      GI= this.Gser(x, a);
+      GI= Gser(x, a);
   } else {
-      GI= this.Gcf(x, a);
+      GI= Gcf(x, a);
   }
   return GI;
 }
@@ -67,7 +67,7 @@ const computeP = (chi, df) => {
   if (DF<=0) {
     console.error("Degrees of freedom must be positive");
   } else {
-    Chisqcdf = this.Gammacdf(Z / 2, DF / 2);
+    Chisqcdf = Gammacdf(Z / 2, DF / 2);
   }
   Chisqcdf=Math.round(Chisqcdf * 100000) / 100000;
   if(Chisqcdf < 1) {
@@ -77,5 +77,29 @@ const computeP = (chi, df) => {
   }
 }
 
+const analyse = (values) => {
+      const observed = matrix.create(values);
+      const u = matrix.map(function() { return(1); }, observed);
+      const r = matrix.create(u.mat.slice(0,1));
+      const c = matrix.transpose(matrix.create(matrix.transpose(u).mat.slice(0,1)));
+      sum = matrix.mult(matrix.mult(matrix.transpose(u), observed), matrix.transpose(r)).mat[1];
+      const fi = matrix. mult(r, matrix.transpose(observed));
+      const fj = matrix.mult(matrix.transpose(observed), c);
+      let expected = matrix.transpose(matrix.mult(fj, fi));
+      expected = matrix.map(madd, expected);
+      var x = matrix.sub(observed, expected);
+      x = matrix.map(mpwr, x);
+      x = matrix.combine(div, x, expected);
+      x = matrix.mult(matrix.mult(u, matrix.transpose(x)), c);
+      const chi = x.mat[1];
+      const df = (observed.m-1)*(observed.n-1);
+      const pValue = computeP(chi, df);
+      return {
+        chi,
+        df,
+        pValue
+      };
+    }
 
-export default computeP;
+
+export default analyse;
