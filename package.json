@@ -1,6 +1,6 @@
 {
   "name": "chi-square-p-value",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Find Chi Square, P-value, Degree of Freedom, adjusted residual values of a contingency Table ie, two dimensional array",
   "main": "chi-square-p-value.js",
   "scripts": {

@@ -86,13 +86,13 @@ const computeResidual = (observedArr, expectedArr) => {
     if (typeof residualArray[i] === 'undefined') {
       residualArray[i] = []; 
     }
+    const rowTotal = matrix.calculateRowTotal(i, observedArr);
     for (let j = 0; j < columns; j += 1) {
       const observed = observedArr.mat[i][j];
       const expected = expectedArr.mat[i][j];
       const numerator = observed - expected;
-      const rowTotal = matrix.calculateRowTotal(i, observedArr);
       const columnTotal = matrix.calculateColumnTotal(j, observedArr);
-      const denominator = Math.sqrt((rowTotal * columnTotal * total) * ( 1 - (rowTotal / total)) * ( 1 - (columnTotal / total)));
+      const denominator = Math.sqrt((rowTotal * columnTotal / total) * ( 1 - (rowTotal / total)) * ( 1 - (columnTotal / total)));
       residualArray[i][j] = numerator / denominator;
     }
   }
@@ -100,32 +100,32 @@ const computeResidual = (observedArr, expectedArr) => {
 }
 
 const analyse = (values) => {
-      const observed = matrix.create(values);
-      const u = matrix.map(function() { return(1); }, observed);
-      const r = matrix.create(u.mat.slice(0,1));
-      const c = matrix.transpose(matrix.create(matrix.transpose(u).mat.slice(0,1)));
-      sum = matrix.mult(matrix.mult(matrix.transpose(u), observed), matrix.transpose(r)).mat[1];
-      const fi = matrix. mult(r, matrix.transpose(observed));
-      const fj = matrix.mult(matrix.transpose(observed), c);
-      let expected = matrix.transpose(matrix.mult(fj, fi));
-      expected = matrix.map(madd, expected);
-      var x = matrix.sub(observed, expected);
-      x = matrix.map(mpwr, x);
-      x = matrix.combine(div, x, expected);
-      x = matrix.mult(matrix.mult(u, matrix.transpose(x)), c);
-      const chi = x.mat[1];
-      const df = (observed.m-1)*(observed.n-1);
-      const pValue = computeP(chi, df);
-      const residual = computeResidual(observed, expected);
-      return {
-        chi,
-        df,
-        pValue,
-        residual
-      };
-    }
+  const observed = matrix.create(values);
+  const u = matrix.map(function() { return(1); }, observed);
+  const r = matrix.create(u.mat.slice(0,1));
+  const c = matrix.transpose(matrix.create(matrix.transpose(u).mat.slice(0,1)));
+  sum = matrix.mult(matrix.mult(matrix.transpose(u), observed), matrix.transpose(r)).mat[1];
+  const fi = matrix. mult(r, matrix.transpose(observed));
+  const fj = matrix.mult(matrix.transpose(observed), c);
+  let expected = matrix.transpose(matrix.mult(fj, fi));
+  expected = matrix.map(madd, expected);
+  var x = matrix.sub(observed, expected);
+  x = matrix.map(mpwr, x);
+  x = matrix.combine(div, x, expected);
+  x = matrix.mult(matrix.mult(u, matrix.transpose(x)), c);
+  const chi = x.mat[1];
+  const df = (observed.m-1)*(observed.n-1);
+  const pValue = computeP(chi, df);
+  const residual = computeResidual(observed, expected);
+  return {
+    chi,
+    df,
+    pValue,
+    residual
+  };
+}
 
-
-
-
+/*const analysis = analyse([[242, 151, 269, 241], [255, 218, 259, 147]]);
+console.log(analysis);
+*/
 export default analyse;
