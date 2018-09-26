@@ -24,8 +24,9 @@ const contingencyTable = [
 * chi - Chi Square value
 * df - Degree of Freedom
 * pValue - P Value
+* residual - Adjusted Residual values of array
 ***/
 
-const { chi, df, pValue } = Analyse(contingencyTable);
+const { chi, df, pValue, residual } = Analyse(contingencyTable);
 
 ```

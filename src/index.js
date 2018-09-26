@@ -1,5 +1,5 @@
 import matrix from './matrix';
-
+let sum;
 const madd = (values) =>  values / sum;
 
 const mpwr = (value) => value * value;
@@ -77,6 +77,28 @@ const computeP = (chi, df) => {
   }
 }
 
+const computeResidual = (observedArr, expectedArr) => {
+  const rows = observedArr.m;
+  const columns = observedArr.n;
+  const residualArray = [];
+  const total = matrix.sumMatrix(observedArr);
+  for (let i = 0; i < rows; i += 1) {
+    if (typeof residualArray[i] === 'undefined') {
+      residualArray[i] = []; 
+    }
+    for (let j = 0; j < columns; j += 1) {
+      const observed = observedArr.mat[i][j];
+      const expected = expectedArr.mat[i][j];
+      const numerator = observed - expected;
+      const rowTotal = matrix.calculateRowTotal(i, observedArr);
+      const columnTotal = matrix.calculateColumnTotal(j, observedArr);
+      const denominator = Math.sqrt((rowTotal * columnTotal * total) * ( 1 - (rowTotal / total)) * ( 1 - (columnTotal / total)));
+      residualArray[i][j] = numerator / denominator;
+    }
+  }
+  return residualArray;
+}
+
 const analyse = (values) => {
       const observed = matrix.create(values);
       const u = matrix.map(function() { return(1); }, observed);
@@ -94,12 +116,16 @@ const analyse = (values) => {
       const chi = x.mat[1];
       const df = (observed.m-1)*(observed.n-1);
       const pValue = computeP(chi, df);
+      const residual = computeResidual(observed, expected);
       return {
         chi,
         df,
-        pValue
+        pValue,
+        residual
       };
     }
+
+
 
 
 export default analyse;

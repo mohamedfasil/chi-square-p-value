@@ -1,15 +1,22 @@
 {
   "name": "chi-square-p-value",
-  "version": "1.0.1",
-  "description": "Find Chi Square, P-value, Degree of Freedom of a contingency Table ie, two dimensional array",
+  "version": "1.0.2",
+  "description": "Find Chi Square, P-value, Degree of Freedom, adjusted residual values of a contingency Table ie, two dimensional array",
   "main": "chi-square-p-value.js",
   "scripts": {
     "test": "NA",
+    "babel-node": "babel-node --presets=latest",
+    "start": "nodemon --exec npm run babel-node -- ./src/index.js",
     "build": "webpack"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mohamedfasil/chi-square-p-value.git"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
   },
   "keywords": [
     "chi",
@@ -31,10 +38,13 @@
   },
   "homepage": "https://github.com/mohamedfasil/chi-square-p-value#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-latest": "^6.24.1",
+    "nodemon": "^1.18.4",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
   }

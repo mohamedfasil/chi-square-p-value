@@ -500,6 +500,29 @@ this.eigenstructure = function (mo)
   return EVDecomposition.create(mo);
 }
 
+this.calculateRowTotal = function(row, matrix) {
+  const k = matrix.mat[row];
+  return k.reduce((total, num) => total + num);
+}
+
+this.calculateColumnTotal = function(column, matrix) {
+  const k = [];
+  for (let i = 0; i < matrix.m; i += 1) {
+    k.push(matrix.mat[i][column]);
+  }
+  return k.reduce((total, num) => total + num);
+}
+
+this.sumMatrix = function(matrix) {
+  let total = 0;
+  for (let i = 0; i < matrix.m; i += 1) {
+    for (let j = 0; j < matrix.n; j += 1) {
+      total += matrix.mat[i][j];
+    }
+  }
+  return total;
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Matrix.display(mo,dp): displays the Matrix object mo using dp decimal places. If dp is
 //  omitted, the default in IOUtils.js is used.
