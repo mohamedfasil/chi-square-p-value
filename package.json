@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NA",
     "babel-node": "babel-node --presets=latest",
-    "start": "nodemon --exec npm run babel-node -- ./src/index.js",
+    "start": "node --exec npm run babel-node -- ./src/index.js",
     "build": "webpack"
   },
   "repository": {
@@ -44,7 +44,6 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-latest": "^6.24.1",
-    "nodemon": "^1.18.4",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
   }
