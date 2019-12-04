@@ -1,5 +1,7 @@
 # chi-square-p-value
 
+[![npm version](https://badge.fury.io/js/chi-square-p-value.svg)](//npmjs.com/package/chi-square-p-value)
+
 Find Chi Square, P-value, Degree of Freedom of a contingency Table ie, two dimensional array
 
 A working sample can be seen here [http://statpages.info/chisq.html](http://statpages.info/chisq.html)
